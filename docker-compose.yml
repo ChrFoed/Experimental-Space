@@ -1,0 +1,75 @@
+version: '3.5'
+services:
+    frontend:
+      container_name: frontend  # Container name
+      build: ./frontend
+      volumes:
+        - './frontend:/usr/src/app'
+      ports:
+        - '4200:4200'
+      command: >
+        bash -c "npm install && ng serve --host 0.0.0.0 --port 4200"
+      links:
+        - backend:backend
+        - crawler:crawler
+    backend:
+      container_name: backend
+      build: backend
+      restart: always
+      command: gunicorn --reload --bind 0.0.0.0:4300 --timeout 360 backend.wsgi:application
+      environment:
+        - "COMSTATS_DB_USER=comstats"
+        - "COMSTATS_DB_PASSWORD=sahcooHoh3"
+        - "COMSTATS_DB_DATABASE=comstats"
+      volumes:
+        - ./backend:/code
+      ports:
+        - '4300:4300'
+      expose:
+        - '4300'
+      links:
+        - postgres:postgres
+      depends_on:
+        - postgres
+    postgres:
+      container_name: postgres
+      restart: always
+      environment:
+        - "COMSTATS_DB_USER=comstats"
+        - "COMSTATS_DB_PASSWORD=sahcooHoh3"
+        - "COMSTATS_DB_DATABASE=comstats"
+        - "POSTGRES_PASSWORD=postgres"
+        - "POSTGRES_USER=postgres"
+      build: './db'
+      volumes:
+        - ./db/data:/var/lib/postgresql/data
+    migration:
+      container_name: migrations
+      build: backend
+      command: bash -c "python manage.py makemigrations --noinput && python manage.py migrate --noinput"
+      environment:
+        - "COMSTATS_DB_USER=comstats"
+        - "COMSTATS_DB_PASSWORD=sahcooHoh3"
+        - "COMSTATS_DB_DATABASE=comstats"
+      volumes:
+        - ./backend:/code
+      depends_on:
+        - postgres
+    crawler:
+      container_name: crawler
+      build: backend
+      command: gunicorn --reload --bind 0.0.0.0:4400 --timeout 360 backend.wsgi:application
+      environment:
+        - "COMSTATS_DB_USER=comstats"
+        - "COMSTATS_DB_PASSWORD=sahcooHoh3"
+        - "COMSTATS_DB_DATABASE=comstats"        
+      volumes:
+        - ./backend:/code
+      ports:
+        - '4400:4400'
+      expose:
+        - '4400'
+      links:
+        - postgres:postgres
+      depends_on:
+        - postgres
