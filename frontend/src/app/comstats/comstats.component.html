@@ -1,0 +1,8 @@
+<div *ngIf="matchDays.length > 0;else empty_message">
+  <app-matchdays [matchDays]="matchDays"></app-matchdays>
+</div>
+<div class="info-wrapper">
+  <ng-template #empty_message>
+      <app-info [matchday]="matchday" [season]="season" [userId]="userId"></app-info>
+  </ng-template>
+</div>

@@ -1,0 +1,7 @@
+<mat-tab-group animationDuration="1500ms" [selectedIndex]="this.matchDays.length">
+  <mat-tab *ngFor="let matchDay of matchDays; let in = index" [label]="matchDay.matchday">
+    <ng-template matTabContent>
+      <app-users [matchday]="matchDay.matchday" [season]="matchDay.season"></app-users>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

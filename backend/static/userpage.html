@@ -1,0 +1,40 @@
+<!doctype html>
+<html class="no-js" ng-controller="MainCtrl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="fragment" content="!">
+  <title>Fussball-Manager COMUNIO, Managerspiel, Fußballmanager</title>
+  <base href="/">
+  <meta name="description" content="Ein kostenloses Fussball-Manager Spiel, welches auf den realen Ereignissen im Fußball basiert. Werde Manager bei diesem Managerspiel!">
+  <meta name="viewport" content="width=device-width">
+  <link rel="shortcut icon" ng-href="{{faviconShortcutPath}}">
+  <link rel="apple-touch-icon" sizes="57x57" ng-href="{{faviconApplePath}}">
+  <link rel="icon" type="image/png" ng-href="{{faviconPath}}" sizes="32x32">
+  <link rel="stylesheet" href="/styles/main.b0e0fab6.css">
+  <link rel="stylesheet" href="/styles/clublogos.css"> <!-- adblock detection -->
+  <script type="text/javascript">
+    var adBlock = true;
+  </script>
+  <script type="text/javascript" src="/scripts/advertising/adInit.1e2d15b4.js"></script> <!-- adblock detection end-->
+  <!-- comunio head content end -->
+
+<body id="top" ng-class="{'registration-responsive' : stateContains('registration'), 'root-body' : stateContains('root')}">
+  <!--[if lt IE 9]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+        your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <grid>
+    <level id="level-1">
+      <div id="ui-view" ui-view autoscroll></div>
+    </level>
+    <level id="level-2">
+      <partner-main-container></partner-main-container>
+    </level>
+  </grid>
+  <script type="text/javascript" src="/scripts/vendor.e1b1a8ee.js"></script>
+  <script type="text/javascript" src="/scripts/config.js"></script>
+  <script type="text/javascript" src="/node_modules/requirejs/require.js" data-main="index.36d5ea52"></script>
+  <piwik-tracking-code></piwik-tracking-code>
+  <click-tracker></click-tracker>
+  <szm-tag></szm-tag> <!-- comunio content end -->

@@ -1,0 +1,19 @@
+<div class="main-div">
+  <mat-card class="info-card center">
+    <mat-card-header>
+      <div mat-card-avatar class="info-header-image"></div>
+      <mat-card-title>Currently no Data available</mat-card-title>
+      <mat-card-subtitle>Refetch Data</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="assets/images/cantona.jpg" alt="Eric Cantona">
+    <mat-card-content>
+      <p>
+        There was an error with gettin this data.
+        <b>CANTONA</b> is not amused
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-fab color="primary" type="button" (click)="fetchData()">Re Fetch</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

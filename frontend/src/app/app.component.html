@@ -1,0 +1,10 @@
+<div class="mainMenu">
+  <button mat-button [matMenuTriggerFor]="menu">Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/comstats" routerLinkActive="active">Comstats</button>
+    <button mat-menu-item routerLink="/map" routerLinkActive="active">Map Section</button>
+  </mat-menu>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+<!-- <app-comstats></app-comstats> -->

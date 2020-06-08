@@ -1,0 +1,54 @@
+<div *ngIf="players.length > 0;else empty_message">
+  <table mat-table [dataSource]="players" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="kader">
+      <th mat-header-cell *matHeaderCellDef> Im Kader </th>
+      <td mat-cell *matCellDef="let element"> {{element.kader}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="averagePoints">
+      <th mat-header-cell *matHeaderCellDef> Durchschnittliche Punkte </th>
+      <td mat-cell *matCellDef="let element"> {{element.averagePoints}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="actualPoints">
+      <th mat-header-cell *matHeaderCellDef> Aktuelle Punktzahl </th>
+      <td mat-cell *matCellDef="let element"> {{element.actualPoints}} </td>
+    </ng-container>
+      <button (click)="fetchData()" mat-button>Fetch Data</button>
+    <ng-container matColumnDef="lastPoints">
+      <th mat-header-cell *matHeaderCellDef> Punkte letzter Spieltag </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastPoints}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currentPoints">
+      <th mat-header-cell *matHeaderCellDef> Momentane Punkte </th>
+      <td mat-cell *matCellDef="let element"> {{element.currentPoints}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currentRating">
+      <th mat-header-cell *matHeaderCellDef> Momentanes Rating </th>
+      <td mat-cell *matCellDef="let element"> {{element.currentRating}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+<div class="info-wrapper">
+  <ng-template #empty_message>
+      <app-info [matchday]="matchday" [season]="season" [userId]="userId"></app-info>
+  </ng-template>
+</div>
