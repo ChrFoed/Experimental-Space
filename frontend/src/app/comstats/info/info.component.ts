@@ -14,18 +14,25 @@ export class InfoComponent implements OnInit {
   @Input() public season: string;
   @Input() public matchday: string;
   @Input() public userId: number;
+  @Input() public userData: any[];
+
+  fetchInProgress: Boolean = false;
 
   ngOnInit() {
   }
 
   fetchData() {
-    console.log(this.season)
-    console.log(this.matchday)
-    console.log(this.userId)
     if(this.season && this.matchday && this.userId) {
-      this.data.fetchData(this.userId, this.season, this.matchday).subscribe((matchday: any) => {
-        console.log(this.matchday)
+      this.fetchInProgress = true;
+      this.data.fetchData(this.userId, this.season, this.matchday).subscribe(async(userData: any) => {
+        this.data.getUserPlayers(this.userId, this.season, this.matchday).subscribe((players: any) => {
+          //this.players = players;
+          console.log('finished1')
+          console.log(players)
+        })
+        console.log('finished2')
       })
+      console.log('finished3')
     }
   }
 

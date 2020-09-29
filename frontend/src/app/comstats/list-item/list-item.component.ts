@@ -11,8 +11,6 @@ export class ListItemComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.player)
-  }
+  ngOnInit() {}
 
 }

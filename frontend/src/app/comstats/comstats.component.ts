@@ -19,7 +19,6 @@ export class ComstatsComponent implements OnInit {
   ngOnInit() {
     this.data.getMatchDays().subscribe((matchdays: any) => {
       this.matchDays = matchdays;
-      console.log(this.matchDays)
     })
   }
 }

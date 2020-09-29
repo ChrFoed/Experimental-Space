@@ -32,11 +32,14 @@ export class DataService {
   }
 
   fetchData(uid, season, matchday) {
-    console.log('here')
     return this.http.get<any>(`${this.FETCHAPI}/matchday?uid=${uid}&matchday=${matchday}&season=${season}&single=true`);
   }
 
-  getPlayers(userid, season, matchday) {
-    return this.http.get<any>(`${this.API}/players?uid=${userid}&matchday=${matchday}&season=${season}`);
+  getUserPlayers(userid, season, matchday) {
+    return this.http.get<any>(`${this.API}/userplayers?uid=${userid}&matchday=${matchday}&season=${season}`);
+  }
+
+  getUsersPlayers(season, matchday) {
+    return this.http.get<any>(`${this.API}/usersplayers?matchday=${matchday}&season=${season}`);
   }
 }

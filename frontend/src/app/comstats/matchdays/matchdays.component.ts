@@ -17,11 +17,9 @@ export class MatchdaysComponent {
   ngOnInit() {}
 
   getTimeLoaded(index: number) {
-    console.log(this.matchDays)
     if (!this.tabLoadTimes[index]) {
       this.tabLoadTimes[index] = new Date();
     }
-
     return this.tabLoadTimes[index];
   }
 }

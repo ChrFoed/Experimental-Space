@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from './../data.service';
 
 export interface Players {
+  Rank: number;
+  User: string;
   name: string;
   pid: number;
   kader: Boolean;
@@ -13,33 +15,27 @@ export interface Players {
 }
 
 
-/**
- * @title Basic use of `<table mat-table>`
- */
-
 @Component({
-  selector: 'app-list',
-  styleUrls: ['./list.component.less'],
-  templateUrl: './list.component.html',
+  selector: 'app-statlist',
+  templateUrl: './statlist.component.html',
+  styleUrls: ['./statlist.component.less']
 })
-
-
-export class ListComponent {
+export class StatlistComponent implements OnInit {
 
   @Input() public season: string;
   @Input() public matchday: string;
-  @Input() public userId: number;
 
   @Input() public players: Players[] = [];
 
-  displayedColumns: string[] = ['name', 'kader', 'averagePoints', 'actualPoints', 'lastPoints', 'currentPoints', 'currentRating'];
+  displayedColumns: string[] = ['Rank', 'User', 'name', 'kader', 'averagePoints', 'actualPoints', 'lastPoints', 'currentPoints', 'currentRating'];
 
   constructor(private data: DataService) {}
 
 
   ngOnInit() {
-    this.data.getUserPlayers(this.userId, this.season, this.matchday).subscribe((players: any) => {
+    this.data.getUsersPlayers(this.season, this.matchday).subscribe((players: any) => {
       this.players = players;
     })
   }
+
 }

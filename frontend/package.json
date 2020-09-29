@@ -21,8 +21,18 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@turf/bbox-clip": "^6.0.3",
+    "@turf/helpers": "^6.1.4",
+    "@turf/turf": "^5.1.6",
+    "cesium": "^1.73.0",
+    "jsts": "^2.5.1",
+    "ol": "^6.4.3",
+    "ol-cesium": "^2.11.3",
+    "olcs": "^2.11.3",
     "rxjs": "~6.4.0",
+    "simple-statistics": "^7.2.0",
     "tslib": "^1.10.0",
+    "turf": "^3.0.14",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
