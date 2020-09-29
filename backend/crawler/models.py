@@ -26,7 +26,7 @@ class Matchday(models.Model):
 class Player(models.Model):
 
     mdid = models.ForeignKey('crawler.Matchday' ,on_delete=models.SET_NULL, null=True)
-    userId = models.IntegerField(help_text='USER ID')
+    userId = models.ForeignKey('crawler.Users',on_delete=models.SET_NULL, null=True)
     name = models.TextField(max_length=200, help_text='Players Sur Name')
     pid = models.IntegerField(help_text='Players Id')
     kader = models.BooleanField(help_text='Is in Kader')
@@ -50,7 +50,6 @@ class Player(models.Model):
 class Match(models.Model):
 
     mdid = models.ForeignKey('crawler.Matchday', on_delete=models.SET_NULL, null=True)
-
     mid = models.IntegerField(help_text='Match Id')
     begin = models.DateTimeField(auto_now=False)
     home = models.TextField(max_length=8, help_text='Home Club Id')
@@ -67,7 +66,7 @@ class Match(models.Model):
 
 class Users(models.Model):
     name = models.TextField(max_length=200, help_text='Human Name')
-    uid = models.IntegerField(max_length=8, help_text='Human Id')
+    uid = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     totalPoints = models.IntegerField(help_text='User Points season', default=0)
     lastPoints = models.IntegerField(help_text='User Points last game', default=0)
     livePoints = models.IntegerField(help_text='User Live Points', default=0)
@@ -76,7 +75,7 @@ class Users(models.Model):
         unique_together = ['uid']
 
     def __str__(self):
-        """String for representing the Model object."""
+        """String for representing the,on_delete=models.SET_NULL Model object."""
         return self.name
 
 class Club(models.Model):

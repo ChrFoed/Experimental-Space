@@ -37,15 +37,13 @@ def matchday(request):
     matchday = ''
     season = ''
 
-    print(request, flush=True)
-
     if request.method != 'GET':
         return HttpResponse(json.dumps({'error': 'GET Request required'}), content_type="application/json")
 
     if "uid" in request.GET.keys():
         USERID = request.GET['uid']
     else:
-        return HttpResponse(json.dumps({'error': 'Usier ID Required'}), content_type="application/json")
+        return HttpResponse(json.dumps({'error': 'User ID Required'}), content_type="application/json")
 
     if "matchday" in request.GET.keys() and "season" in request.GET.keys():
         matchday = "/%s"%(request.GET['matchday'])
@@ -73,7 +71,6 @@ def getLocalHtml():
 def getProdHtml(day = '', season = ''):
     print("%s%s%s"%(SOURCEURL, season, day), flush=True)
     r = requests.get(url = "%s%s%s"%(SOURCEURL, season, day))
-    print(r.url, flush=True)
     data = r.text
     r.close()
     return data
@@ -118,9 +115,7 @@ def fetchUsers(request):
     headers= {}
     response = requests.request("GET", url, headers=headers, data = payload)
     userData = response.json()
-    print(userData, flush=True)
     for user in userData['standings']['items']:
-        print(user['_embedded']['user'], flush=True)
         if not models.Users.objects.filter(uid=user['_embedded']['user']['id']).exists():
             models.Users.objects.create(
                 uid=user['_embedded']['user']['id'],
@@ -248,7 +243,6 @@ def getUserPlayers(playerId = USERID):
         if uPlayer['lastPoints'] == '-' or uPlayer['lastPoints'] == None:
             uPlayer['lastPoints'] = 0
         playerObject = {}
-        print('Handling player %s from user id %s'%(uPlayer['name'], uPlayers[0]['owner']['name']), flush=True)
         playerObject['userId'] = uPlayers[0]['owner']['id']
         playerObject['name'] = uPlayer['name']
         playerObject['pid'] = uPlayer['id']

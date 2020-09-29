@@ -62,7 +62,7 @@ services:
       environment:
         - "COMSTATS_DB_USER=comstats"
         - "COMSTATS_DB_PASSWORD=sahcooHoh3"
-        - "COMSTATS_DB_DATABASE=comstats"        
+        - "COMSTATS_DB_DATABASE=comstats"
       volumes:
         - ./backend:/code
       ports:
