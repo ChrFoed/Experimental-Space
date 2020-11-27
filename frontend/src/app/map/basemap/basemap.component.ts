@@ -124,6 +124,7 @@ export class BasemapComponent implements OnInit {
     heightCalculator.seedPeaks();
     heightCalculator.seedSinks();
     heightCalculator.calculateHeights();
+    this.vectorGrid.setStyle(this.heightStyle());
   }
 
   createVectorLayer = (tileGrid, zoom) => {
@@ -140,13 +141,14 @@ export class BasemapComponent implements OnInit {
       self.currentGrowRate++;
     })
     this.amountOfTiles = this.vectorGrid.getSource().getFeatures().length;
-    this.maxGrowRate = Math.round(this.amofeatureuntOfTiles * 0.6)
+    this.maxGrowRate = Math.round(this.amountOfTiles * 0.6)
   }
 
   createOceans = () => {
     this.vectorGrid.getSource().forEachFeature(function(feat) {
       if (feat.get('usage') == false) {
         feat.set('usage', 'water', true)
+        feat.set('class', '-1', true)
       }
     })
   }
@@ -224,7 +226,6 @@ export class BasemapComponent implements OnInit {
 
   calculateHelperAxis = (feature, seeder) => {
     feature.getGeometry().scale(seeder.randomByDistributionfunction(1, this.amountOfTiles * 0.33 / (this.seedPoints * 4) / 20, 1), seeder.randomByDistributionfunction(this.amountOfTiles * 0.33 / (this.seedPoints * 4) / 20, this.amountOfTiles * 0.33 / this.seedPoints / 10, 1));
-    console.log(feature.getGeometry().getExtent())
     feature.getGeometry().rotate((Math.random() * Math.PI * 2) * 100, [seeder.randomByDistributionfunction(feature.getGeometry().getExtent()[0], feature.getGeometry().getExtent()[2]), seeder.randomByDistributionfunction(feature.getGeometry().getExtent()[1], feature.getGeometry().getExtent()[3])]);
     return new GeometryOperator(feature.getGeometry().getCoordinates()[0]).generateFeatures()
   }
@@ -246,16 +247,23 @@ export class BasemapComponent implements OnInit {
   }
 
   heightStyle = () => {
+    let maxheight = this.heights[1];
     return function styleFunction(feature, resolution) {
-      let value = target.get('height')['value'] ? target.get('height')['value'] : -1000;
+      let value = 0;
+      if (feature.get('height') != undefined) {
+          value = feature.get('height')['value'] ? feature.get('height')['value'] : -1000;
+          console.log({value})
+      }
       let colors = ['#dcfffc', '#c5e3be', '#e3ff00', '#ffcc78', '#fff8eb']
+      console.log('here')
+      console.log(Math.floor(maxheight/value))
       let style = new Style({
         stroke: new Stroke({
           color: '#E74C3C',
           width: 0,
         }),
         fill: new Fill({
-          color: '#F9E79F'
+          color: colors[Math.floor(maxheight/value)]
         })
       })
       return style;

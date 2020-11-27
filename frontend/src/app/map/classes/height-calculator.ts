@@ -13,9 +13,9 @@ import GeometryOperator from '../classes/geometry-operator';
 
 export class HeightCalculator {
 
-  protected seedPoints: number = 10;
+  protected seedPoints: number = 1;
 
-  protected maxSeedClass: numer = 5;
+  protected maxSeedClass: number = 10;
 
   protected vSource: VectorSource;
 
@@ -46,13 +46,19 @@ export class HeightCalculator {
     })
   }
 
-
   getHeightSteep = () => {
-    return this.heigths[1] / this.maxSeedClass;
+    return this.heights[1] / this.maxSeedClass;
   }
 
   getHeight = (seedClass, maxheight) => {
     return this.getHeightSteep()
+  }
+
+  getCurrentHeightInterval = (seedClass, value) => {
+    return {
+      'max': (this.heights[1] / this.maxSeedClass) * (this.maxSeedClass - seedClass - 1),
+      'min': (this.heights[1] / this.maxSeedClass) * (this.maxSeedClass - seedClass)
+    }
   }
 
   calculateHeights = () => {
@@ -63,35 +69,32 @@ export class HeightCalculator {
     // let targets = this.features.filter(function(feature) { return feature.get('height')['peak'] == true })
     // console.log({targets})
     let iterations = 0
-    while (this.features.filter(function(feature) { return feature.get('usage') != 'height' }).length > 0) {
+    let counter = 0
+    const util = new Utilities()
+    while (this.features.filter(function(feature) { return feature.get('height') == undefined }).length > 0) {
       iterations = iterations + 1;
-      if (iterations > 100) {
+      let tempTargets = []
+      if (iterations > 1) {
         console.log('hit')
         break;
       }
+      console.log(`Current targets; ${targets.length} in iteration: ${iterations}`)
       for (let target of targets) {
         let bboxes = new GeometryOperator(new Feature({ geometry: fromExtent(buffer(target.getGeometry().getExtent(), 30)) }).getGeometry().getCoordinates()[0]).generateFeatures()
         for (let bbox of bboxes) {
           self.vSource.forEachFeatureInExtent(buffer(bbox.getGeometry().getExtent(), 30), function(tfeat) {
-            console.log(target.get('height')['value'])
-            console.log(tfeat.get('class'))
+            if (tfeat.get('height') == undefined) {
+              let borders = self.getCurrentHeightInterval(tfeat.get('class'), target.get('height')['value'])
+              tfeat.set('height', { 'value': util.randBetween(borders['min'], target.get('height')['value']), 'peak': false }, false)
+              tempTargets.push(tfeat);
+            }
           })
         }
       }
+      targets = [];
+      console.log(`Current temptargets; ${tempTargets.length} in iteration: ${iterations}`)
+      targets = tempTargets;
     }
-    //
-
-
-    //   const orgFeatures = this.vectorGrid.getSource().getFeatures().filter(function(feat) {
-    //     return feat.get('class') == seedClass;
-    //   })
-    //   if (seedClass > self.maxSeedClass) {
-    //     break;
-    //   }
-    //   seedClass++;
-    //   for (let ofeat of orgFeatures) {
-    //
-    //   }
   }
 
   getSeedCoordinates = () => {

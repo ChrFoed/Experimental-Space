@@ -1,37 +1,21 @@
-from django.shortcuts import render, redirect
-from datetime import date
-from django.core import serializers
-from django.http import HttpResponse
-from common.util import valuesQuerySetToDict
-import requests
 import json
+from datetime import date
 from decimal import Decimal
 
+import requests
+from common.util import valuesQuerySetToDict
 from crawler.models import Matchday, Player, Users
+from django.core import serializers
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
 
 now = date.today()
 
 CRAWLERAPI = "crawler/matchday?"
 
-dummyData = {
-    'owner': 'Christian',
-    'playday': now.strftime("%d-%b-%Y (%H:%M:%S.%f)"),
-    'stats': {
-        'players': [
-                {
-                'active': True,
-                'rating': 6,
-                'change': 2,
-                'name': 'Cantona',
-                'id': 12345,
-                'misc': 'testest'
-                }
-            ]
-        }
-}
-
 
 class DecimalEncoder(json.JSONEncoder):
+    """Helper class for proper string encoding"""
     def default(self, obj):
         if isinstance(obj, Decimal):
             return float(obj)
@@ -40,8 +24,19 @@ class DecimalEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-
 def getMatchdays(request):
+    """Returns matchdays to build up overview
+
+    Parameters
+    ----------
+    request : HttpRequest
+        contains information about users and season
+
+    Returns
+    -------
+    HttpResponse
+        Returns python dictionary of matchdays
+    """
     days = Matchday.objects.all().filter().values('season', 'matchday').order_by('matchday')
     data = valuesQuerySetToDict(days)
     return HttpResponse(json.dumps(data), content_type="application/json")
