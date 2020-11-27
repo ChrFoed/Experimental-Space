@@ -17,17 +17,13 @@ import json
 
 
 APIURL = "https://stats.comunio.de/xhr/matchDetails.php"
-
 SOURCEURL = "https://stats.comunio.de/matchday"
-
-COMURL = "https://www.comunio.de/communities/2112353"
 COMMUNITY = "https://www.comunio.de/api/communities/"
 
 USERURL = "https://www.comunio.de/api/communities/"
 
-COMMUNITY_ID = 2112353 if 'COMMUNITY_ID' not in os.environ else os.environ['COMMUNITY_ID']
-USERID = 12280528 # Christian
-# Martin = 12283169
+COMMUNITY_ID = False if 'COMMUNITY_ID' not in os.environ else os.environ['COMMUNITY_ID']
+USERID = False if 'USER_ID' not in os.environ else os.environ['USER_ID']
 
 SQUADURL = "https://www.comunio.de/api/users/"
 
@@ -128,7 +124,7 @@ def fetchUsers(request):
     return HttpResponse(json.dumps({'users': 'All Users in Database'}), content_type="application/json")
 
 def fetchMatchdays(request):
-    html = getProdHtml();
+    html = getProdHtml()
     soup = soupGenerator(html)
     data = getMatchDay(soup)
     for pday in range(int(data['matchday']), 0, -1):
@@ -149,7 +145,7 @@ def getMatches(soup, matchDay):
         if "r1" in day['class']:
             date = getDate(day.td)
             if not date:
-                continue;
+                continue
             gameData['begin'] = date
         # Check if its a game and parse the clubs
         elif "r2" in day['class']:
